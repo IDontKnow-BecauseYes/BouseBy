@@ -7,45 +7,38 @@ genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 # Criar modelo
 model = genai.GenerativeModel("gemini-pro")
 
-# Função para gerar relatório
-def gerar_relatorio(nome, opiniao):
+# Função para gerar perfil
+def gerar_perfil(nome, opiniao):
     prompt = f"""
-    Gere um relatório fictício e criativo, em tom policial/jornalístico, com base no seguinte:
+    Crie um perfil criativo e fictício com base nos dados abaixo.
 
     Nome: {nome}
-    Opinião polêmica: {opiniao}
+    Característica marcante / opinião forte: {opiniao}
 
-    O relatório deve conter:
+    Gere um pequeno parágrafo (3 a 5 linhas) descrevendo:
     - Nome completo
-    - Data da prisão (entre 2023 e 2030)
-    - Motivo da prisão (relacionado à opinião polêmica)
-    - Data da morte (entre a data da prisão e 2040)
-    - Local da morte (na prisão ou na rua)
+    - Idade estimada
+    - Profissão ou área de atuação
+    - Comportamento ou visão de mundo relacionada à opinião
+    - Um fato curioso ou destaque da vida dessa pessoa
 
-    Exemplo de estilo:
-    Nome: João Silva
-    Preso em: 14/09/2026
-    Motivo: incitação ao ódio em rede social
-    Morreu em: 03/12/2029 (prisão)
-
-    Seja criativo, mas realista e direto. No máximo 5 linhas.
+    Mantenha um tom leve, realista e criativo.
     """
 
     response = model.generate_content(prompt)
     return response.text.strip()
 
 # Interface Streamlit
-st.title("🧠 Gerador de Relatórios Fictícios")
-st.write("Digite o nome de uma pessoa e uma opinião polêmica para gerar um relatório policial/jornalístico fictício.")
+st.title("📝 Gerador de Perfis Criativos")
+st.write("Digite o nome de uma pessoa e uma opinião ou característica para gerar um perfil fictício.")
 
 nome = st.text_input("Nome completo")
-opiniao = st.text_area("Opinião polêmica")
+opiniao = st.text_area("Opinião ou característica marcante")
 
-if st.button("Gerar relatório"):
+if st.button("Gerar perfil"):
     if nome and opiniao:
-        resultado = gerar_relatorio(nome, opiniao)
-        st.success("Relatório gerado:")
+        resultado = gerar_perfil(nome, opiniao)
+        st.success("Perfil gerado:")
         st.code(resultado)
     else:
         st.warning("Preencha todos os campos.")
-
